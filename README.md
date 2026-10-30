@@ -1,26 +1,22 @@
 # Representation-of-a-Real-World-Problem-as-a-Markov-Decision-Process
 
-
+## NAME : Hashwatha M
+## REG NO : 212223240051
 ## Aim
 
-Write your aim here.
+To model a Netflix/YouTube Recommendation System as a Markov Decision Process (MDP) by defining its states, actions, transition probabilities, reward function, and discount factor for optimizing long-term user engagement.
 
-Example:
-
-> To identify a real-world sequential decision-making problem and represent it formally as a Markov Decision Process by defining its states, actions, rewards, transitions, and Python representation.
-
----
 
 ## Problem Statement
 
+To design a recommendation system for a streaming platform such as Netflix or YouTube that intelligently recommends movies or videos to users based on their interests and viewing behaviour. The system aims to maximize long-term user engagement by selecting recommendations that encourage users to watch more content, like videos, and continue using the platform. Since each recommendation influences the user's future behaviour, the problem can be modelled as a Markov Decision Process (MDP).
+
 ### Problem Description
 
-Write your answer here.
+A recommendation system, such as those used by Netflix or YouTube, continuously recommends movies or videos to users based on their viewing history, preferences, and interactions. At every step, the system decides which content to recommend next to maximize long-term user engagement and satisfaction.
 
-Describe the real-world application that you selected.
+The user's response, such as watching, skipping, liking, or ending the session, determines the next state of the system. The objective is to recommend content that increases watch time, user retention, and overall platform engagement. Since each recommendation influences future user behaviour, this problem can be represented as a Markov Decision Process (MDP).
 
-
----
 
 ## MDP Components
 
@@ -44,62 +40,47 @@ Where:
 
 ## State Space
 
-Write your answer here.
-
-The state space should list all possible situations in which the agent can exist.
-
-Example format:
 
 ```text
 S = {
-    State 1,
-    State 2,
-    State 3,
-    ...
+    New User,
+    Browsing Content,
+    Watching Content,
+    Liked Content,
+    Session Ended
 }
 ```
-
-
 
 ---
 
 ## Sample State
 
-Write your answer here.
+Watching Content
 
-A sample state is one specific example from the state space.
-
-
+In this state, the user is actively watching a recommended movie or video. The recommendation system observes the user's behaviour and prepares the next recommendation based on the current interaction.
 
 ---
 
 ## Action Space
 
-Write your answer here.
-
-The action space should list all possible actions available to the agent.
-
-Example format:
 
 ```text
 A = {
-    Action 1,
-    Action 2,
-    Action 3,
-    ...
+    Recommend Movie,
+    Recommend TV Show,
+    Recommend Similar Content,
+    Recommend Trending Content,
+    Recommend New Release
 }
 ```
-
 
 ---
 
 ## Sample Action
 
-Write your answer here.
+Recommend Similar Content
 
-A sample action is one action selected from the action space.
-
-
+In this action, the recommendation system suggests content that is similar to what the user is currently watching or has watched previously. This increases the probability of continued engagement.
 
 ---
 
@@ -119,65 +100,174 @@ This means:
 
 > Probability of reaching next state $s'$ after taking action $a$ in current state $s$.
 
+Example
+If the user is Browsing Content and the system recommends a movie:
+80% probability that the user starts watching.
+20% probability that the user continues browsing.
+
+Similarly,
+
+If the user is Watching Content:
+They may like the content.
+They may skip it.
+They may end the session.
 
 ---
 
 ## Reward Function
 
-Write your answer here.
-
-The reward function defines the feedback received by the agent after taking an action.
+The reward function provides feedback based on the user's response to the recommendation.
 
 General form:
 
-$$
-R(s,a,s')
-$$
+R(s,a,s′)
 
+where:
 
+s = Current state
+a = Recommendation made
+s′ = Next state
+Example Rewards
+Transition	Reward
+S0 → S1 (User Starts Browsing)	0
+S1 → S2 (User Watches Recommended Content)	+20
+S2 → S3 (User Likes or Completes Content)	+50
+S2 → S1 (User Skips Recommendation)	−10
+S3 → S2 (User Watches Another Recommendation)	+30
+S2 → S4 (User Ends Session Early)	−20
+S3 → S4 (Session Ends After High Engagement)	+100
 
 ---
 
 ## Graphical Representation
 
-Write your answer here.
+The Markov Decision Process (MDP) for the Netflix/YouTube Recommendation System is represented as a directed graph. Each node represents a user state, and each arrow represents the action taken by the recommendation system. Rewards are assigned based on the user's interaction, and transition probabilities indicate the likelihood of moving to the next state.
 
-Draw the MDP graph.
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/d1b668bb-b00c-4e95-9aef-35c310a61036" />
 
-The graph should include:
 
-1. States as nodes.
-2. Actions as arrows.
-3. Rewards on transitions.
-4. Transition probabilities if applicable.
+State Labels
+S0 – New User
+S1 – Browsing Content
+S2 – Watching Content
+S3 – Liked Content
+S4 – Session Ended
+Explanation
+The user starts in S0 (New User) and enters Browsing Content (S1).
+The recommendation system suggests content.
+If the user watches the recommendation, the system moves to Watching Content (S2) with Reward = +20 and Probability = 0.8.
+If the user skips the recommendation, the reward is −10, and the user remains in the browsing state.
+After watching, the user may like or complete the content, moving to S3 with Reward = +50.
+If the user ends the session, the process moves to S4 with a Reward = −20.
+From Liked Content (S3), recommending similar content can bring the user back to Watching Content (S2) with Reward = +30, increasing long-term engagement.
+
+This graph satisfies all the required MDP components:
+
+States as nodes.
+Actions as arrows.
+Rewards on transitions.
+Transition probabilities on each transition.
 
 
 ---
 
 ## Python Representation
 
-Write your code here.
-
-Use Python dictionaries to represent the MDP.
-
-
 ```python
 # MDP Representation using Python
-# print("Name:       ")
-# print("Register Number:     ")
+from pprint import pprint
 
+print("Name: Hashwatha M")
+print("Register Number: 212223240051")
+
+# States
+states = {
+    0: "New User",
+    1: "Browsing Content",
+    2: "Watching Content",
+    3: "Liked Content",
+    4: "Session Ended"
+}
+
+# Actions
+actions = {
+    0: "Recommend Movie",
+    1: "Recommend TV Show",
+    2: "Recommend Similar Content",
+    3: "Recommend Trending Content",
+    4: "Recommend New Release"
+}
+
+# MDP Transition Function
+# Format:
+# P[state][action] = [(probability, next_state, reward, done)]
+
+P = {
+
+    # State 0: New User
+    0: {
+
+        # Action 0: Recommend Movie
+        0: [(1.00, 1, 0, False)]
+    },
+
+    # State 1: Browsing Content
+    1: {
+
+        # Action 0: Recommend Movie
+        0: [
+            (0.80, 2, 20, False),
+            (0.20, 1, -10, False)
+        ]
+    },
+
+    # State 2: Watching Content
+    2: {
+
+        # Action 2: Recommend Similar Content
+        2: [
+            (0.70, 3, 50, False),
+            (0.30, 4, -20, True)
+        ]
+    },
+
+    # State 3: Liked Content
+    3: {
+
+        # Action 2: Recommend Similar Content
+        2: [
+            (0.90, 2, 30, False),
+            (0.10, 4, 100, True)
+        ]
+    },
+
+    
+}
+
+# Discount Factor
+gamma = 0.9
+
+# Print MDP in required format
+pprint(P, width=50)
+
+print("\nDiscount Factor (γ):", gamma)
 ```
 ---
-## Output
+## Output: 
 
-Write your Python output here.
+<img width="471" height="290" alt="image" src="https://github.com/user-attachments/assets/54fc828e-b636-4047-bad5-384a97de490a" />
+
+
+### Input data :
+
+<img width="714" height="327" alt="image" src="https://github.com/user-attachments/assets/2ec950f1-1ea1-4473-b09f-a49040448fba" />
 
 
 ---
 
 ## Result
 
-Write your result here.
+The Netflix/YouTube Recommendation System was successfully represented as a Markov Decision Process (MDP) using Python dictionaries. The model defines the states, actions, transition probabilities, rewards, and discount factor, demonstrating how reinforcement learning can be used to optimize recommendations and maximize long-term user engagement.
 
 
 
